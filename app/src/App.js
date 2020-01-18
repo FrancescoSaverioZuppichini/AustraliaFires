@@ -7,11 +7,11 @@ import "./App.css"
 
 function App() {
   return (
-    <Box p={4}>
+    <div className='App'>
       <header>Australia Fires</header>
       <Map></Map>
-      <Tweets></Tweets>
-    </Box>
+      {/* <Tweets></Tweets> */}
+    </div>
   )
 }
 
