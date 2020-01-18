@@ -4,17 +4,22 @@
   "private": true,
   "proxy": "http://localhost:8080/",
   "dependencies": {
+    "@rebass/preset": "^4.0.5",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.1",
     "csvtojson": "^2.0.10",
     "deck.gl": "^8.0.8",
+    "emotion-theming": "^10.0.27",
+    "install": "^0.13.0",
+    "npm": "^6.13.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-map-gl": "^5.2.1",
     "react-scripts": "3.3.0",
-    "rebass": "^4.0.7"
+    "rebass": "^4.0.7",
+    "unstated": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
