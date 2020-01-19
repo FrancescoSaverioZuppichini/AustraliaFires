@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Box } from "rebass"
+import { Box, Card } from "rebass"
 import DeckGL from "@deck.gl/react"
 import { StaticMap } from "react-map-gl"
 import { HeatmapLayer } from "@deck.gl/aggregation-layers"
@@ -31,30 +31,32 @@ const MAPBOX_ACCESS_TOKEN =
 export default class Map extends Component {
   render() {
     return (
-      <Subscribe to={[FiresContainer]}>
-        {fires => (
-          <Box style={{ position: "relative", minHeight: "66vh" }}>
-            <DeckGL
-              initialViewState={initialViewState}
-              controller={true}
-              layers={[
-                new HeatmapLayer({
-                  id: "heatmapLayer",
-                  data: fires.state.data,
-                  getPosition: d => [
-                    parseFloat(d.longitude),
-                    parseFloat(d.latitude)
-                  ]
-                  // radiusPixels: 10,
-                  // getWeight: d => d.WEIGHT
-                })
-              ]}
-            >
-              <StaticMap mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN} />
-            </DeckGL>
-          </Box>
-        )}
-      </Subscribe>
+      <Card>
+        <Subscribe to={[FiresContainer]}>
+          {fires => (
+            <Box style={{ position: "relative", minHeight: "66vh" }}>
+              <DeckGL
+                initialViewState={initialViewState}
+                controller={true}
+                layers={[
+                  new HeatmapLayer({
+                    id: "heatmapLayer",
+                    data: fires.state.data,
+                    getPosition: d => [
+                      parseFloat(d.longitude),
+                      parseFloat(d.latitude)
+                    ]
+                    // radiusPixels: 10,
+                    // getWeight: d => d.WEIGHT
+                  })
+                ]}
+              >
+                <StaticMap mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN} />
+              </DeckGL>
+            </Box>
+          )}
+        </Subscribe>
+      </Card>
     )
   }
 }

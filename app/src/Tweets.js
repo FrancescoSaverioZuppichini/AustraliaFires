@@ -1,7 +1,9 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Box, Card, Heading, Flex, Text } from "rebass"
- 
+import { Subscribe } from "unstated"
+import TwitterContainer from "./containers/Twitter"
+
 const Tweet = () => {
   return (
     <Card>
@@ -28,9 +30,13 @@ export default class Tweets extends Component {
 
   render() {
     return (
-      <Flex>
-        <Tweet />
-      </Flex>
+      <Subscribe to={[TwitterContainer]}>
+        {twitter => (
+          <Flex>
+            <Tweet />
+          </Flex>
+        )}
+      </Subscribe>
     )
   }
 }
