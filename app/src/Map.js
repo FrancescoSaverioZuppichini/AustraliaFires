@@ -43,13 +43,13 @@ export default class Map extends Component {
                     id: "heatmapLayer",
                     data: fires.state.data,
                     // http://colorbrewer2.org/#type=sequential&scheme=Greys&n=6
-                    colorRange: [
-                      [1, 152, 189],
-                      [73, 227, 206],
-                      [216, 254, 181],
-                      [254, 237, 177],
-                      [254, 173, 84],
-                      [209, 55, 78]
+                    // colorRange: [
+                    //   [1, 152, 189],
+                    //   [73, 227, 206],
+                    //   [216, 254, 181],
+                    //   [254, 237, 177],
+                    //   [254, 173, 84],
+                    //   [209, 55, 78]
                     ],
                     getPosition: d => [
                       parseFloat(d.longitude),
