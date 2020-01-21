@@ -50,7 +50,7 @@ export default class Map extends Component {
                     //   [254, 237, 177],
                     //   [254, 173, 84],
                     //   [209, 55, 78]
-                    ],
+                    // ],
                     getPosition: d => [
                       parseFloat(d.longitude),
                       parseFloat(d.latitude)

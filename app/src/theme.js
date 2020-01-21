@@ -52,7 +52,7 @@ export default {
       p: 4,
       borderRadius: 16,
       bg: "#373737",
-      boxShadow: "-9px -9px 9px #4E4D4D, 9px 9px 9px #252525;"
+      boxShadow: "-9px -9px 18px #4E4D4D, 9px 9px 18px #252525;"
     },
 
     shadows: {
