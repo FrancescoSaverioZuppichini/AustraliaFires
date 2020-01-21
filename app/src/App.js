@@ -16,16 +16,16 @@ export default class App extends Component {
   render() {
     return (
       <Provider>
-        <ThemeProvider theme={theme}>
-          <Box {...theme.app} p={0}>
-            <Header theme={theme}></Header>
-            <Box p={2}>
-              <Map></Map>
-              <Box mt={4}></Box>
-              <UsefulLinks></UsefulLinks>
+        <ThemeProvider theme={theme.dark}>
+            <Box {...theme.dark.app} p={0}>
+              <Header theme={theme.dark}></Header>
+              <Box p={2}>
+                <Map></Map>
+                <Box mt={4}></Box>
+                <UsefulLinks></UsefulLinks>
+              </Box>
+              {/* <Footer theme={theme}></Footer> */}
             </Box>
-            <Footer theme={theme}></Footer>
-          </Box>
         </ThemeProvider>
       </Provider>
     )

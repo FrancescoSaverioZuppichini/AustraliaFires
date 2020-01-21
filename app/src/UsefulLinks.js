@@ -35,10 +35,10 @@ const links = [
 
 const UsefulLink = ({ title, text, link, image = null }) => {
   return (
-    <Box px={2} py={2} width={[1, 1 / 2, 1 / 3]}>
-      <Card height="100%">
+    <Box px={3} py={3} width={[1, 1 / 2, 1 / 3]}>
+      <Card height="100%" color='#BABABA'>
         <Heading>{title}</Heading>
-        <Link href={link}>Source</Link>
+        <Link href={link} color='#BABABA'>Source</Link>
         <Text fontSize={3} pt={1} pb={1}>
           {text}
         </Text>
