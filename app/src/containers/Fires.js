@@ -13,7 +13,7 @@ export default class FiresContainer extends Container {
   getData() {
     const csvParser = csv()
     axios
-      .get("/data/fires.csv")
+      .get("/data/2019-01-20T00:00:00.000Z.csv")
       .then(({ data }) => data)
       .then(data => csvParser.fromString(data))
       .then(data => this.setState({ data }))
