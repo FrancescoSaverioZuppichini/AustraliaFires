@@ -1,23 +1,36 @@
-var express = require("express")
-var path = require("path")
-var cookieParser = require("cookie-parser")
-var logger = require("morgan")
-var axios = require("axios")
-var path = require("path")
-var fs = require("fs")
+const express = require("express")
+const path = require("path")
+const cookieParser = require("cookie-parser")
+const logger = require("morgan")
+const fs = require("fs")
+const Fires = require("./models/Fire")
+const { ApolloServer, gql } = require("apollo-server-express")
+const mongoose = require("mongoose")
+const typeDefs = require("./schemas/schemas.js")
 
 const PORT = process.env.PORT || "8080"
-const DATA_DIR = path.normalize("../")
+const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost/fires"
+// connect to our db
+mongoose
+  .connect(MONGO_URL)
+  .then(() => console.log(`🚀 Mongodb connected at ${MONGO_URL}`))
+  .catch(e => consolg.error(e))
 
-function getTodayData() {
-  return axios.get(
-    "https://firms.modaps.eosdis.nasa.gov/data/active_fire/c6/csv/MODIS_C6_Australia_NewZealand_24h.csv"
-  )
+files = fs.readdirSync("./public/data")
+console.log(files.includes("fires.csv"))
+const app = express()
+
+const resolvers = {
+  Query: {
+    hello: () => "world",
+    fires: (src, { date }) => Fires.find({acq_date : {'$gt': new Date(date)}})
+  }
 }
 
-files = fs.readdirSync('./public/data')
-console.log(files.includes('fires.csv'))
-const app = express()
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
+})
 
 app.use(logger("dev"))
 app.use(express.json())
@@ -29,25 +42,8 @@ app.get("/", function(req, res, next) {
   res.render("index", { title: "Express" })
 })
 
-app.get("/data/", async (req, res, next) => {
-  let { date } = req.query
-  date = new Date(date)
-  const file_name = `${date.toISOString()}.csv`
-  const file_path = path.normalize(`./public/data/${file_name}`)
-  const files  = fs.readdirSync('./public/data')
+server.applyMiddleware({ app })
 
-  if(!files.includes(file_name)){
-    var { data } = await getTodayData()
-    fs.writeFileSync(file_path, data)
-  }
-
-  res.json({ path: file_path })
-})
-
-// axios.get('https://firms.modaps.eosdis.nasa.gov/data/active_fire/c6/csv/MODIS_C6_Australia_NewZealand_24h.csv')
-// .then(data => console.log(data))
-// .catch(err => console.error(err))
-
-app.listen(PORT, function() {
-  console.log(`App listening on port ${PORT} 🚀`)
-})
+app.listen({ port: PORT }, () =>
+  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+)
