@@ -17,13 +17,30 @@ mongoose
   .catch(e => consolg.error(e))
 
 files = fs.readdirSync("./public/data")
-console.log(files.includes("fires.csv"))
+
 const app = express()
 
 const resolvers = {
   Query: {
     hello: () => "world",
-    fires: (src, { date }) => Fires.find({acq_date : {'$gt': new Date(date)}})
+    fires: async (src, { date }) => {
+      const fires = await Fires.find({
+        acq_date: { $gt: new Date(date) }
+      })
+        .skip(after)
+        .limit(first)
+
+      const hasNextPage = fires.length >= first
+      after = after + first
+
+      return {
+        fires,
+        pageInfo: {
+          after,
+          hasNextPage
+        }
+      }
+    }
   }
 }
 
@@ -38,12 +55,23 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
 
-app.get("/", function(req, res, next) {
+app.get("/api/v1/fires", async(req, res, next) => {
+  let { date } = req.query
+  date = new Date(date)
+
+  const fires = await Fires.aggregateByDate(date)
+
+  res.json({ fires : fires })
+})
+
+app.get("/", (req, res, next) => {
   res.render("index", { title: "Express" })
 })
 
 server.applyMiddleware({ app })
 
 app.listen({ port: PORT }, () =>
-  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+  console.log(
+    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  )
 )
