@@ -19,18 +19,24 @@ const FireSchema = new mongoose.Schema({
   daynight: String
 })
 
-FireSchema.statics.aggregateByDate =  function (date) {
+/**
+ * This function aggregates all the fires given a date.
+ * @param {date} date The starting date from which aggregate all info
+ */
+FireSchema.statics.aggregateByDate = function(date) {
   return this.aggregate([
-    { $match: { acq_date: { $gte: date } }},
-    { $sort: { acq_date: -1 }},
-     {$group: { _id : { date : "$acq_date" },
-              latitude: {$push: "$latitude"},
-              longitude: {$push: "$longitude"},
-              confidence:  {$push: "$confidence"},
-              brightness: {$push: "$brightness"}
-      }}
-  
+    { $match: { acq_date: { $gte: date } } },
+    { $sort: { acq_date: -1 } },
+    {
+      $group: {
+        _id: { _id: null },
+        latitude: { $push: "$latitude" },
+        longitude: { $push: "$longitude" },
+        confidence: { $push: "$confidence" },
+        brightness: { $push: "$brightness" }
+      }
+    }
   ])
-};
+}
 
 module.exports = mongoose.model("Fire", FireSchema)

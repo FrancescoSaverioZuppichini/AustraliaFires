@@ -9,20 +9,11 @@ scalar Date
     hello: String
   }
 
-  type PaginatedFires {
-      fires: [Fire]
-      pageInfo: PageInfo
-  }
-
-  type PageInfo {
-      after: Int!,
-      hasNextPage: Boolean
-  }
-
   type Fires {
     latitude: [Float!]
     longitude: [Float!]
     brightness: [Float!]
+    confidence: [Float!]
   }
 
   type Fire {

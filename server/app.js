@@ -16,31 +16,13 @@ mongoose
   .then(() => console.log(`🚀 Mongodb connected at ${MONGO_URL}`))
   .catch(e => consolg.error(e))
 
-files = fs.readdirSync("./public/data")
-
 const app = express()
 
 const resolvers = {
   Query: {
     hello: () => "world",
-    fires: async (src, { date }) => {
-      const fires = await Fires.find({
-        acq_date: { $gt: new Date(date) }
-      })
-        .skip(after)
-        .limit(first)
-
-      const hasNextPage = fires.length >= first
-      after = after + first
-
-      return {
-        fires,
-        pageInfo: {
-          after,
-          hasNextPage
-        }
-      }
-    }
+    fires: async (src, { date }) =>
+      (await Fires.aggregateByDate(new Date(date)))[0]
   }
 }
 
@@ -55,13 +37,12 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
 
-app.get("/api/v1/fires", async(req, res, next) => {
+app.get("/api/v1/fires", async (req, res, next) => {
   let { date } = req.query
   date = new Date(date)
 
-  const fires = await Fires.aggregateByDate(date)
-
-  res.json({ fires : fires })
+  const fires = (await Fires.aggregateByDate(date))[0]
+  res.json(fires)
 })
 
 app.get("/", (req, res, next) => {
