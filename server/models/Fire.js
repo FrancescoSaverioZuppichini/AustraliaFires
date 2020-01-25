@@ -40,7 +40,7 @@ FireSchema.statics.aggregateByDate = function(startDate, endDate) {
         confidence: { $push: "$confidence" },
         brightness: { $push: "$brightness" }
       }
-    }
+    }    
   ])
 }
 

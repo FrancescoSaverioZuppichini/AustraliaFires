@@ -7,6 +7,7 @@ const Fires = require("./models/Fire")
 const { ApolloServer, gql } = require("apollo-server-express")
 const mongoose = require("mongoose")
 const typeDefs = require("./schemas/schemas.js")
+const cors = require("cors")
 
 const PORT = process.env.PORT || "8080"
 const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost/fires"
@@ -17,15 +18,24 @@ mongoose
   .catch(e => consolg.error(e))
 
 const app = express()
+app.use(cors())
 
 const resolvers = {
   Query: {
     hello: () => "world",
-    fires: async (src, { startDate, endDate = null }) =>
-      await Fires.aggregateByDate(
-        new Date(startDate),
-        endDate === null ? new Date() : new Date(endDate)
-      )
+    fires: async (src, { startDate, endDate = null }) =>{
+    console.log(startDate)
+      // await Fires.find({
+      //   acq_date: {
+      //     $gte: new Date(startDate),
+      //     $lt: endDate === null ? new Date() : new Date(endDate)
+      //   }
+      // })
+    return await Fires.aggregateByDate(
+      new Date(startDate),
+      endDate === null ? new Date() : new Date(endDate)
+    )
+    }
   }
 }
 
@@ -41,10 +51,11 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
 
 app.get("/api/v1/fires", async (req, res, next) => {
-  let { date } = req.query
-  date = new Date(date)
+  let { startDate } = req.query
+  startDate = new Date(startDate)
 
-  const fires = await Fires.aggregateByDate(date)
+  const fires = await Fires.aggregateByDate(startDate, new Date())
+  console.log(fires)
   res.json(fires)
 })
 
