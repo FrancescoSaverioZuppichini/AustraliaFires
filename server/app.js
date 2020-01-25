@@ -21,8 +21,11 @@ const app = express()
 const resolvers = {
   Query: {
     hello: () => "world",
-    fires: async (src, { date }) =>
-      (await Fires.aggregateByDate(new Date(date)))[0]
+    fires: async (src, { startDate, endDate = null }) =>
+      await Fires.aggregateByDate(
+        new Date(startDate),
+        endDate === null ? new Date() : new Date(endDate)
+      )
   }
 }
 
@@ -41,12 +44,19 @@ app.get("/api/v1/fires", async (req, res, next) => {
   let { date } = req.query
   date = new Date(date)
 
-  const fires = (await Fires.aggregateByDate(date))[0]
+  const fires = await Fires.aggregateByDate(date)
   res.json(fires)
 })
 
 app.get("/", (req, res, next) => {
   res.render("index", { title: "Express" })
+})
+
+app.get("/api/v1/fires/today", async (req, res, next) => {
+  let foo = await Fires.getToday()
+
+  const fires = await Fires.aggregateByDate(new Date())
+  res.json(fires)
 })
 
 server.applyMiddleware({ app })

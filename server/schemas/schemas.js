@@ -5,11 +5,12 @@ scalar Date
 
   type Query {
     fire: Fire
-    fires(date: Date): Fires
+    fires(startDate: Date, endDate: Date): [Fires]
     hello: String
   }
 
   type Fires {
+    date: Date
     latitude: [Float!]
     longitude: [Float!]
     brightness: [Float!]
