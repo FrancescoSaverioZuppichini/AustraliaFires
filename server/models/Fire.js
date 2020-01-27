@@ -38,7 +38,8 @@ FireSchema.statics.aggregateByDate = function(startDate, endDate) {
         latitude: { $push: "$latitude" },
         longitude: { $push: "$longitude" },
         confidence: { $push: "$confidence" },
-        brightness: { $push: "$brightness" }
+        brightness: { $push: "$brightness" },
+        count: { $sum: 1 }
       }
     }    
   ])

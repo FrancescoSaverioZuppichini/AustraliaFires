@@ -45,8 +45,6 @@ export default function Map() {
       dataParsed.push({ latitude, longitude })
     }
   }
-
-  console.log(dataParsed.length)
   return (
     <Card>
       <Box style={{ position: "relative", minHeight: "66vh" }}>
@@ -67,8 +65,6 @@ export default function Map() {
               //   [209, 55, 78]
               // ],
               getPosition: d => [d.longitude, d.latitude]
-              // radiusPixels: 10,
-              // getWeight: d => d.WEIGHT
             })
           ]}
         >

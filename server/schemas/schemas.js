@@ -15,6 +15,7 @@ scalar Date
     longitude: [Float!]
     brightness: [Float!]
     confidence: [Float!]
+    count: Int!
   }
 
   type Fire {
